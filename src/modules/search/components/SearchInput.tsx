@@ -6,12 +6,21 @@ import LoadMoreBtn from '@/components/shared/LoadMoreBtn'
 import Loading from '@/app/loading'
 import Layout from '@/components/shared/Layout/Layout'
 import { useSearch } from '../hooks/useSearch'
+import { Category } from '@/types'
+import { HeadingProps } from '@/components/shared/Heading'
 
 // TODO: research how to make two fetch(Promise.all) req live_only channels and not live_only then connect to eachother
 // TODO: research tanstack query
-const SearchInput = () => {
+interface SearchInputProps extends HeadingProps {
+  category: Category
+  placeholder?: string
+}
+
+const SearchInput = (props: SearchInputProps) => {
+  const { category, placeholder = 'Search...', ...rest } = props
+
   const {
-    filteredChannelsData: channelsData,
+    filteredData,
     dropdownRef,
     handleFocus,
     handleInputChange,
@@ -21,14 +30,10 @@ const SearchInput = () => {
     isFocused,
     isLoading,
     searchTerm,
-  } = useSearch()
+  } = useSearch(category)
 
   return (
-    <Layout
-      className="relative"
-      title="You can search the clips by channel!"
-      coloredText="Right Here"
-    >
+    <Layout className="relative" {...rest}>
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
           <SearchIcon />
@@ -42,7 +47,7 @@ const SearchInput = () => {
           type="text"
           id="default-search"
           className="block w-full border border-violet-800 p-4 ps-10"
-          placeholder="Search twitch channels..."
+          placeholder={placeholder}
           required
         />
       </div>
@@ -54,10 +59,10 @@ const SearchInput = () => {
         >
           {isLoading ? (
             <Loading isFullscreen={false} />
-          ) : channelsData?.length ? (
+          ) : filteredData?.length ? (
             <ul>
-              {channelsData?.map(channel => (
-                <SearchItem key={channel.id} channel={channel} />
+              {filteredData?.map(item => (
+                <SearchItem key={item.id} item={item} />
               ))}
               <LoadMoreBtn isLoading={isFetching} onClick={handleLoadMore} />
             </ul>

@@ -9,6 +9,12 @@ export interface Game {
   igdb_id: string
 }
 
+export interface GameCategory {
+  id: string
+  name: string
+  box_art_url: string
+}
+
 export interface Clip {
   id: string
   url: string

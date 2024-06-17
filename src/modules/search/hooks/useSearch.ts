@@ -1,13 +1,18 @@
 import { useDebounce } from '@/hooks/useDebounce'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { getChannels, getMoreChannels } from '../api'
-import { Channel } from '@/types'
+import {
+  getCategories,
+  getChannels,
+  getMoreCategories,
+  getMoreChannels,
+} from '../api'
+import { Category, Channel, GameCategory } from '@/types'
 import { filterUniqueListById } from '@/utils/helpers-functions'
 
-export const useSearch = () => {
+export const useSearch = (category: Category) => {
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [isFocused, setIsFocused] = useState<boolean>(false)
-  const [channelsData, setChannelsData] = useState<Channel[]>([])
+  const [data, setData] = useState<(Channel | GameCategory)[]>([])
 
   const [isLoading, setLoading] = useState<boolean>(true)
   const [isFetching, setFetching] = useState<boolean>(false)
@@ -18,17 +23,20 @@ export const useSearch = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const fetchChannels = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true)
     if (debouncedSearchTerm) {
       try {
-        const channels = await getChannels(debouncedSearchTerm)
-        if (channels) {
-          setChannelsData(channels.data)
-          setCursor(channels.pagination.cursor)
+        const data =
+          category === 'channel'
+            ? await getChannels(debouncedSearchTerm)
+            : await getCategories(debouncedSearchTerm)
+        if (data) {
+          setData(data.data)
+          setCursor(data.pagination.cursor)
         }
       } catch (error) {
-        console.error('Error fetching channels:', error)
+        console.error('Error fetching data:', error)
       } finally {
         setLoading(false)
       }
@@ -36,8 +44,8 @@ export const useSearch = () => {
   }, [debouncedSearchTerm])
 
   useEffect(() => {
-    fetchChannels()
-  }, [fetchChannels])
+    fetchData()
+  }, [fetchData])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -57,21 +65,21 @@ export const useSearch = () => {
     }
   }, [inputRef, dropdownRef])
 
-  const filteredChannelsData = useMemo(
-    () => filterUniqueListById(channelsData),
-    [channelsData]
-  )
+  const filteredData = useMemo(() => filterUniqueListById(data), [data])
 
   const handleLoadMore = useCallback(async () => {
     setFetching(true)
     try {
-      const channels = await getMoreChannels(debouncedSearchTerm, cursor)
-      if (channels) {
-        setChannelsData(prev => [...prev, ...channels.data])
-        setCursor(channels.pagination.cursor)
+      const data =
+        category === 'channel'
+          ? await getMoreChannels(debouncedSearchTerm, cursor)
+          : await getMoreCategories(debouncedSearchTerm, cursor)
+      if (data) {
+        setData(prev => [...prev, ...data.data])
+        setCursor(data.pagination.cursor)
       }
     } catch (error) {
-      console.error('Error fetching channels:', error)
+      console.error('Error fetching data:', error)
     } finally {
       setFetching(false)
     }
@@ -89,7 +97,7 @@ export const useSearch = () => {
   }, [])
 
   return {
-    filteredChannelsData,
+    filteredData,
     inputRef,
     dropdownRef,
     searchTerm,
