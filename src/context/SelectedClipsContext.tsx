@@ -1,10 +1,18 @@
 'use client'
 
-import { ReactNode, createContext, useContext, useState } from 'react'
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from 'react'
 
 interface SelectedClipsContextState {
   selectedClipsIds: string[]
-  setSelectedClipsIds: SetState<string[]>
+  //TODO: research to init  global.d.ts. type
+  setSelectedClipsIds: Dispatch<SetStateAction<string[]>>
 }
 
 const SelectedClipsContext = createContext<

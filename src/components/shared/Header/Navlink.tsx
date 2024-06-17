@@ -1,6 +1,8 @@
 'use client'
 
 import ActionTag from '@/components/ui/ActionTag'
+import { ROUTES } from '@/constants/nav-links'
+import { useSelectedClipsContext } from '@/context/SelectedClipsContext'
 import { usePathname } from 'next/navigation'
 
 export interface NavlinkProps {
@@ -13,10 +15,14 @@ const Navlink = (props: NavlinkProps) => {
 
   const pagePath: string = usePathname()
 
+  const { selectedClipsIds } = useSelectedClipsContext()
+
   return (
     <li>
       <ActionTag href={path} isActive={path === pagePath}>
-        {name}
+        {path === ROUTES.PROFILE_PAGE
+          ? `${name}(${selectedClipsIds.length})`
+          : name}
       </ActionTag>
     </li>
   )

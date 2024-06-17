@@ -7,14 +7,14 @@ import {
   normalizeUrltoMp4,
   normalizeViewCount,
 } from '@/utils/helpers-functions'
-import { memo } from 'react'
+import { Dispatch, SetStateAction, memo } from 'react'
 
 interface ClipItemProps {
   clip: Clip
   index: number
   handleIndex: (state: number) => void
-  handleSelected: SetState<string[]>
-  selectedClipsIds: string[]
+  handleSelected?: Dispatch<SetStateAction<string[]>>
+  selectedClipsIds?: string[]
 }
 
 const ClipItem = memo((props: ClipItemProps) => {
@@ -35,7 +35,7 @@ const ClipItem = memo((props: ClipItemProps) => {
   } = props
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col p-3 shadow-md hover:shadow-lg">
       <div onClick={() => handleIndex(index)} className="cursor-pointer">
         <div className="relative">
           <div className="overflow-hidden">
@@ -53,14 +53,18 @@ const ClipItem = memo((props: ClipItemProps) => {
           </span>
         </div>
       </div>
-      <ActionTag
-        as="button"
-        variant="primary"
-        disabled={selectedClipsIds.includes(id)}
-        onClick={() => handleSelected(prev => [...prev, id])}
-      >
-        {selectedClipsIds.includes(id) ? 'Selected!' : 'Select'}
-      </ActionTag>
+      {/* TODO: add the delete from profile logic */}
+      {selectedClipsIds && handleSelected && (
+        <ActionTag
+          as="button"
+          variant="primary"
+          disabled={selectedClipsIds.includes(id)}
+          onClick={() => handleSelected(prev => [...prev, id])}
+        >
+          {selectedClipsIds.includes(id) ? 'Selected in profile!' : 'Select'}
+        </ActionTag>
+      )}
+
       <div className="grow pt-2">
         <h5 className="line-clamp-2 text-lg font-semibold" title={title}>
           {title}
