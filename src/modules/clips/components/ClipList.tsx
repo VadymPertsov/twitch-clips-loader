@@ -56,7 +56,7 @@ const ClipList = memo((props: ClipListProps) => {
           )}
         </div>
       )}
-      {clipsData.length > 0 && (
+      {clipsData.length > 0 && !isLoading && (
         <LoadMoreBtn isLoading={isFetching} onClick={handleLoadMore} />
       )}
       <ClipLightbox clipsList={clipsData} />

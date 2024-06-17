@@ -9,6 +9,7 @@ const ProfileClips = () => {
   const { clipsData, isLoading, setClipIndex } = useProfileClips()
 
   // TODO: add logic max selected clips 100
+  // TODO: add btn download all in zip(install jszip or smthels)
   return (
     <Layout title="Your selected clips">
       {isLoading ? (

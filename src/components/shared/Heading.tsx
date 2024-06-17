@@ -1,5 +1,5 @@
 export interface HeadingProps {
-  title: string
+  title?: string
   coloredText?: string
 }
 
