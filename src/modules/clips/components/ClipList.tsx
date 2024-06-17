@@ -31,10 +31,13 @@ const ClipList = memo((props: ClipListProps) => {
   const { selectedClipsIds, setSelectedClipsIds } = useSelectedClipsContext()
 
   return (
-    <Layout title="Watch the clips and enjoy :)">
+    <Layout
+      title="Watch the clips and enjoy :)"
+      coloredText="You can select the clip in your profile!"
+    >
       <ClipFilter onClick={filterClipsData} currentTimestamp={filter} />
       {isLoading ? (
-        <Loading />
+        <Loading isFullscreen={false} />
       ) : (
         <div className="grid grid-cols-4 gap-5 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
           {!clipsData.length ? (

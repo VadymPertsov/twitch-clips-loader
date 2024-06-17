@@ -118,7 +118,7 @@ const SearchInput = () => {
         <div
           id="dropdown"
           ref={dropdownRef}
-          className="absolute top-full z-10 max-h-[300px] w-full divide-y divide-gray-100 overflow-auto border border-violet-800 bg-white shadow"
+          className="absolute left-0 top-full z-10 max-h-[300px] w-full divide-y divide-gray-100 overflow-auto border border-violet-800 bg-white shadow"
         >
           {isLoading ? (
             <Loading isFullscreen={false} />

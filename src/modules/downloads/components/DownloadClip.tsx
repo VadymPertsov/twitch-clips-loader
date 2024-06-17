@@ -59,8 +59,8 @@ const DownloadClip = () => {
 
   return (
     <Layout
-      title="Or you can choose the clips by the game!"
-      coloredText="Right Here"
+      title="You can download the twitch clip right here"
+      coloredText="By the link!"
     >
       <form className="w-full" onSubmit={handleSubmit}>
         <div className="flex gap-5">

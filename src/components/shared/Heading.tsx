@@ -10,7 +10,7 @@ const Heading = (props: HeadingProps) => {
       <h3 className="text-7xl">
         {title}
         <br />
-        {coloredText && <span className="text-violet-800">Right Here</span>}
+        {coloredText && <span className="text-violet-800">{coloredText}</span>}
       </h3>
     </div>
   )
