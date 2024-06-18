@@ -66,7 +66,7 @@ export const useSearch = (category: Category) => {
   }, [inputRef, dropdownRef])
 
   const filteredData = useMemo(() => filterUniqueListById(data), [data])
-
+  // TODO: if cursor check
   const handleLoadMore = useCallback(async () => {
     setFetching(true)
     try {

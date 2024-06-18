@@ -62,7 +62,7 @@ const DownloadClip = () => {
       title="You can download the twitch clip right here"
       coloredText="By the link!"
     >
-      <form className="w-full" onSubmit={handleSubmit}>
+      <form className="mx-auto max-w-[600px]" onSubmit={handleSubmit}>
         <div className="flex gap-5">
           <input
             value={twitchClipUrl}

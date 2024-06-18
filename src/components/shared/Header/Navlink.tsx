@@ -15,13 +15,13 @@ const Navlink = (props: NavlinkProps) => {
 
   const pagePath: string = usePathname()
 
-  const { selectedClipsIds } = useSelectedClipsContext()
+  const { selectedClips } = useSelectedClipsContext()
 
   return (
     <li>
       <ActionTag href={path} isActive={path === pagePath}>
         {path === ROUTES.PROFILE_PAGE
-          ? `${name}(${selectedClipsIds.length})`
+          ? `${name}(${selectedClips.length})`
           : name}
       </ActionTag>
     </li>

@@ -34,7 +34,7 @@ const SearchInput = (props: SearchInputProps) => {
 
   return (
     <Layout className="relative" {...rest}>
-      <div className="relative">
+      <div className="relative mx-auto max-w-[600px]">
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
           <SearchIcon />
         </div>
@@ -55,7 +55,7 @@ const SearchInput = (props: SearchInputProps) => {
         <div
           id="dropdown"
           ref={dropdownRef}
-          className="absolute left-0 top-full z-10 max-h-[300px] w-full divide-y divide-gray-100 overflow-auto border border-violet-800 bg-white shadow"
+          className="absolute left-[50%] top-full z-10 max-h-[300px] w-full max-w-[600px] -translate-x-1/2 divide-y divide-gray-100 overflow-auto border border-violet-800 bg-white shadow"
         >
           {isLoading ? (
             <Loading isFullscreen={false} />
