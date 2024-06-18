@@ -3,13 +3,15 @@ import ActionTag from '@/components/ui/ActionTag'
 import { normalizeUrltoMp4 } from '@/utils/helpers-functions'
 import { FormEvent, useCallback, useEffect, useState } from 'react'
 import { getClipByUrl } from '../api'
+import Loading from '@/app/loading'
 
 const twitchPath = 'clips.twitch.tv/'
-//TODO: add loader to Download btn
+
 const DownloadClip = () => {
   const [twitchClipUrl, setTwitchClipUrl] = useState<string>('')
   const [downloadUrl, setDownloadUrl] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if (downloadUrl) {
@@ -20,7 +22,6 @@ const DownloadClip = () => {
   }, [downloadUrl])
 
   useEffect(() => {
-    //TODO: useDebounce
     if (twitchClipUrl && !twitchClipUrl.includes(twitchPath)) {
       setErrorMessage(
         'Invalid Twitch clip URL. Please make sure it contains "clips.twitch.tv".'
@@ -32,6 +33,7 @@ const DownloadClip = () => {
 
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
+      setIsLoading(true)
       e.preventDefault()
 
       const clipId = extractClipId(twitchClipUrl)
@@ -45,6 +47,8 @@ const DownloadClip = () => {
         setDownloadUrl(normalizedUrl)
       } catch (error) {
         console.error('Error fetching clip:', error)
+      } finally {
+        setIsLoading(false)
       }
     },
     [twitchClipUrl]
@@ -78,7 +82,7 @@ const DownloadClip = () => {
             className="disabled:cursor-default disabled:bg-red-300 disabled:text-white"
             disabled={errorMessage.length !== 0}
           >
-            Download
+            {isLoading ? <Loading isFullscreen={false} /> : 'Download'}
           </ActionTag>
         </div>
       </form>
