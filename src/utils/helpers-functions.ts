@@ -79,3 +79,7 @@ export const getTimestamp = (time: '24h' | '7d' | '1m'): string => {
   }
   return `&started_at=${start.toISOString()}&ended_at=${end.toISOString()}`
 }
+
+export const buildClipsByIdsPath = (ids: string[]): string => {
+  return ids.map(id => `id=${id}`).join('&')
+}

@@ -1,6 +1,6 @@
 import Axios from '@/app/api/instance'
 import { Clip } from '@/types'
-import { buildClipsByIdsPath } from '../utils/helpers-function'
+import { buildClipsByIdsPath } from '@/utils/helpers-functions'
 
 interface ClipByIdResponce {
   data: Clip[]
