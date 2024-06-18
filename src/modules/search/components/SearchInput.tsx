@@ -66,7 +66,7 @@ const SearchInput = (props: SearchInputProps) => {
               <LoadMoreBtn isLoading={isFetching} onClick={handleLoadMore} />
             </ul>
           ) : (
-            <p className="p-5 text-center">Has no "{searchTerm}" channel :(</p>
+            <p className="p-5 text-center">{`Has no "${searchTerm}" channel :(`}</p>
           )}
         </div>
       )}

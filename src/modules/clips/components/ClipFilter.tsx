@@ -1,7 +1,6 @@
-import Container from '@/components/shared/Layout/Container'
 import ActionTag from '@/components/ui/ActionTag'
 import { Timestamps } from '@/types'
-import { memo, useCallback } from 'react'
+import { memo } from 'react'
 
 interface ClipFilterProps {
   onClick: (time: Timestamps) => void

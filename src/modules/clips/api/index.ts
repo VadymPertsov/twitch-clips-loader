@@ -1,7 +1,6 @@
 import Axios from '@/app/api/instance'
 import { Clip, Pagination, Timestamps } from '@/types'
 import { getTimestamp } from '@/utils/helpers-functions'
-import { time } from 'console'
 
 interface ClipsResponse extends Pagination {
   data: Clip[]

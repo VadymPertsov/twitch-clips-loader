@@ -43,7 +43,7 @@ export interface Channel {
   game_name: string
   id: string
   is_live: boolean
-  tag_ids: any[]
+  tag_ids: (string | number)[]
   tags: string[]
   thumbnail_url: string
   title: string

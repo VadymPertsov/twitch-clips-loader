@@ -22,7 +22,7 @@ export const useLightboxContext = (): LightboxContextState => {
 }
 
 export const LightboxProvider = ({ children }: { children: ReactNode }) => {
-  const [clipIndex, setClipIndex] = useState(-1)
+  const [clipIndex, setClipIndex] = useState<number>(-1)
 
   const value: LightboxContextState = {
     clipIndex,

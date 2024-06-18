@@ -83,7 +83,7 @@ export const useSearch = (category: Category) => {
     } finally {
       setFetching(false)
     }
-  }, [debouncedSearchTerm, cursor])
+  }, [debouncedSearchTerm, cursor, category])
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
