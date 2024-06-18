@@ -1,10 +1,15 @@
+'use client'
+
 import { NAV_LINKS, ROUTES } from '@/constants/nav-links'
 import Navlink from './Navlink'
 import Link from 'next/link'
 import Image from '../Image'
 import logo from '../../../../public/logo.svg'
+import { useSelectedClipsContext } from '@/context/SelectedClipsContext'
 
 const Navbar = () => {
+  const { selectedClips } = useSelectedClipsContext()
+
   return (
     <header className="flex w-full items-center justify-between p-5 shadow-md shadow-violet-100">
       <Link href={ROUTES.HOME_PAGE}>
@@ -19,7 +24,15 @@ const Navbar = () => {
       <nav className="ml-4 self-center">
         <ul className="flex items-center gap-x-5">
           {NAV_LINKS.map(link => (
-            <Navlink key={link.path} name={link.name} path={link.path} />
+            <Navlink
+              key={link.path}
+              name={
+                link.path === ROUTES.PROFILE_PAGE
+                  ? `${link.name}(${selectedClips.length})`
+                  : link.name
+              }
+              path={link.path}
+            />
           ))}
         </ul>
       </nav>
