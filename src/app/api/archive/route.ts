@@ -1,8 +1,7 @@
 import axios from 'axios'
 import JSZip from 'jszip'
-import { NextApiRequest } from 'next'
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: Request) {
   const { searchParams } = new URL(req.url || '')
   const images = JSON.parse(searchParams.get('images') || '[]')
 
