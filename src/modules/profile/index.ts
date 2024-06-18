@@ -1,1 +1,1 @@
-export { default as ProfileClips } from './components/ProfileClips'
+export { default as DownloadZip } from './components/DownloadZip'
