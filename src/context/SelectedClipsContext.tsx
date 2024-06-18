@@ -11,7 +11,6 @@ import {
 } from 'react'
 
 interface SelectedClipsContextState {
-  //TODO: save in context full clip data, not only ids
   selectedClips: Clip[]
   //TODO: research to init  global.d.ts. type
   setSelectedClips: Dispatch<SetStateAction<Clip[]>>

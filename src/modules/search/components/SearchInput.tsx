@@ -9,7 +9,6 @@ import { useSearch } from '../hooks/useSearch'
 import { Category } from '@/types'
 import { HeadingProps } from '@/components/shared/Heading'
 
-// TODO: research how to make two fetch(Promise.all) req live_only channels and not live_only then connect to eachother
 // TODO: research tanstack query
 interface SearchInputProps extends HeadingProps {
   category: Category

@@ -21,7 +21,7 @@ type ActionTagProps = BaseTagProps &
         as?: 'a'
       })
   )
-
+//TODO: add prop target to link
 const ActionTag = (props: ActionTagProps) => {
   const {
     as = 'a',
