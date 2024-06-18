@@ -1,13 +1,14 @@
 'use client'
 
 import { Category, Clip, Timestamps } from '@/types'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   getClipsByChannel,
   getClipsByGame,
   getMoreClipsByChannel,
   getMoreClipsByGame,
 } from '../api'
+import { filterUniqueListById } from '@/utils/helpers-functions'
 
 export const useClips = (category: Category, id: string) => {
   const [filter, setFilter] = useState<Timestamps>('All')
@@ -38,6 +39,11 @@ export const useClips = (category: Category, id: string) => {
     fetchClips()
   }, [])
 
+  const filteredClipsData = useMemo(
+    () => filterUniqueListById(clipsData),
+    [clipsData]
+  )
+
   const handleLoadMore = useCallback(async () => {
     setFetching(true)
     try {
@@ -57,7 +63,7 @@ export const useClips = (category: Category, id: string) => {
     }
   }, [category, id, filter, cursor])
 
-  const filterClipsData = useCallback(
+  const handleFilter = useCallback(
     async (newFilter: Timestamps) => {
       setLoading(true)
       try {
@@ -81,11 +87,11 @@ export const useClips = (category: Category, id: string) => {
   )
 
   return {
-    clipsData,
+    filteredClipsData,
     isLoading,
     isFetching,
     handleLoadMore,
-    filterClipsData,
+    handleFilter,
     filter,
   }
 }

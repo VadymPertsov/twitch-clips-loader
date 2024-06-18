@@ -7,36 +7,44 @@ import {
   normalizeUrltoMp4,
   normalizeViewCount,
 } from '@/utils/helpers-functions'
-import { Dispatch, SetStateAction, memo } from 'react'
+import { Dispatch, SetStateAction, memo, useCallback } from 'react'
 
 interface ClipItemProps {
   clip: Clip
   index: number
-  handleIndex: (state: number) => void
-  handleSelected?: Dispatch<SetStateAction<string[]>>
-  selectedClipsIds?: string[]
+  handleSetIndex: (state: number) => void
+  selectedClips: Clip[]
+  handleSetSelectedClips: Dispatch<SetStateAction<Clip[]>>
 }
 
 const ClipItem = memo((props: ClipItemProps) => {
+  const { clip, index, handleSetIndex, selectedClips, handleSetSelectedClips } =
+    props
+
   const {
-    clip: {
-      thumbnail_url,
-      view_count,
-      title,
-      broadcaster_name,
-      url,
-      created_at,
-      id,
-    },
-    index,
-    handleIndex,
-    handleSelected,
-    selectedClipsIds,
-  } = props
+    thumbnail_url,
+    view_count,
+    title,
+    broadcaster_name,
+    url,
+    created_at,
+    id: clipId,
+  } = clip
+
+  const isClipInProfile = isExistInProfile(selectedClips, clipId)
+
+  const handleSetSelected = useCallback(() => {
+    if (isClipInProfile) {
+      const data = selectedClips.filter(item => item.id !== clip.id)
+      handleSetSelectedClips(data)
+    } else {
+      handleSetSelectedClips(prev => [...prev, clip])
+    }
+  }, [handleSetSelectedClips, selectedClips, clip])
 
   return (
     <div className="flex flex-col p-3 shadow-md hover:shadow-lg">
-      <div onClick={() => handleIndex(index)} className="cursor-pointer">
+      <div onClick={() => handleSetIndex(index)} className="cursor-pointer">
         <div className="relative">
           <div className="overflow-hidden">
             <Image
@@ -53,18 +61,9 @@ const ClipItem = memo((props: ClipItemProps) => {
           </span>
         </div>
       </div>
-      {/* TODO: add the delete from profile logic */}
-      {selectedClipsIds && handleSelected && (
-        <ActionTag
-          as="button"
-          variant="primary"
-          disabled={selectedClipsIds.includes(id)}
-          onClick={() => handleSelected(prev => [...prev, id])}
-        >
-          {selectedClipsIds.includes(id) ? 'Selected in profile!' : 'Select'}
-        </ActionTag>
-      )}
-
+      <ActionTag as="button" variant="primary" onClick={handleSetSelected}>
+        {isClipInProfile ? 'Remove' : 'Select'}
+      </ActionTag>
       <div className="grow pt-2">
         <h5 className="line-clamp-2 text-lg font-semibold" title={title}>
           {title}
@@ -83,5 +82,9 @@ const ClipItem = memo((props: ClipItemProps) => {
     </div>
   )
 })
+
+function isExistInProfile(clips: Clip[], id: string): boolean {
+  return clips.some(clip => clip.id === id)
+}
 
 export default ClipItem

@@ -1,8 +1,7 @@
 import ClipItem from './ClipItem'
-import { Category } from '@/types'
-import Layout from '@/components/shared/Layout/Layout'
+import { Clip, FiltersOptions, LoadMoreOptions } from '@/types'
+import Layout, { LayoutProps } from '@/components/shared/Layout/Layout'
 import { useLightboxContext } from '@/context/LightboxContext'
-import { useClips } from '../hooks/useClips'
 import ClipFilter from './ClipFilter'
 import LoadMoreBtn from '@/components/shared/LoadMoreBtn'
 import ClipLightbox from './ClipLightbox'
@@ -10,56 +9,65 @@ import Loading from '@/app/loading'
 import { memo } from 'react'
 import { useSelectedClipsContext } from '@/context/SelectedClipsContext'
 
-interface ClipListProps {
-  category: Category
-  id: string
+interface ClipListProps extends Pick<LayoutProps, 'title' | 'coloredText'> {
+  clipsList: Clip[]
+  isLoading: boolean
+  loadMore?: boolean | LoadMoreOptions
+  filters?: boolean | FiltersOptions
 }
 
 const ClipList = memo((props: ClipListProps) => {
-  const { category, id } = props
-
   const {
+    clipsList,
     isLoading,
-    clipsData,
-    handleLoadMore,
-    isFetching,
-    filterClipsData,
-    filter,
-  } = useClips(category, id)
+    loadMore = false,
+    filters = false,
+    ...rest
+  } = props
+
+  const enableLoadMoreBtn = loadMore !== false
+  const { isFetching, handleLoadMore }: LoadMoreOptions =
+    typeof loadMore === 'object' ? loadMore : {}
+
+  const enableFilters = filters !== false
+  const { filter, handleFilter }: FiltersOptions =
+    typeof filters === 'object' ? filters : {}
 
   const { setClipIndex } = useLightboxContext()
-  const { selectedClipsIds, setSelectedClipsIds } = useSelectedClipsContext()
+  const { selectedClips, setSelectedClips } = useSelectedClipsContext()
 
   return (
-    <Layout
-      title="Watch the clips and enjoy :)"
-      coloredText="You can select the clip in your profile!"
-    >
-      <ClipFilter onClick={filterClipsData} currentTimestamp={filter} />
+    <Layout {...rest}>
+      {enableFilters && handleFilter && filter && (
+        <ClipFilter onClick={handleFilter} currentTimestamp={filter} />
+      )}
       {isLoading ? (
         <Loading isFullscreen={false} />
       ) : (
         <div className="grid grid-cols-4 gap-5 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-          {!clipsData.length ? (
+          {!clipsList.length ? (
             <p>Has no clips :(</p>
           ) : (
-            clipsData.map((clip, index) => (
+            clipsList.map((clip, index) => (
               <ClipItem
                 key={clip.id}
                 clip={clip}
                 index={index}
-                handleIndex={setClipIndex}
-                handleSelected={setSelectedClipsIds}
-                selectedClipsIds={selectedClipsIds}
+                handleSetIndex={setClipIndex}
+                handleSetSelectedClips={setSelectedClips}
+                selectedClips={selectedClips}
               />
             ))
           )}
         </div>
       )}
-      {clipsData.length > 0 && !isLoading && (
-        <LoadMoreBtn isLoading={isFetching} onClick={handleLoadMore} />
-      )}
-      <ClipLightbox clipsList={clipsData} />
+      {enableLoadMoreBtn &&
+        handleLoadMore &&
+        clipsList.length > 0 &&
+        !isLoading && (
+          <LoadMoreBtn isLoading={isFetching} onClick={handleLoadMore} />
+        )}
+      <ClipLightbox clipsList={clipsList} />
     </Layout>
   )
 })

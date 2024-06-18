@@ -53,3 +53,13 @@ export interface Channel {
 export type Timestamps = 'All' | '24h' | '7d' | '1m'
 
 export type Category = 'game' | 'channel'
+
+export interface LoadMoreOptions {
+  isFetching?: boolean
+  handleLoadMore?: () => void
+}
+
+export interface FiltersOptions {
+  filter?: Timestamps
+  handleFilter?: (timestamp: Timestamps) => void
+}

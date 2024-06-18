@@ -1,5 +1,6 @@
 'use client'
 
+import { Clip } from '@/types'
 import {
   Dispatch,
   ReactNode,
@@ -10,9 +11,10 @@ import {
 } from 'react'
 
 interface SelectedClipsContextState {
-  selectedClipsIds: string[]
+  //TODO: save in context full clip data, not only ids
+  selectedClips: Clip[]
   //TODO: research to init  global.d.ts. type
-  setSelectedClipsIds: Dispatch<SetStateAction<string[]>>
+  setSelectedClips: Dispatch<SetStateAction<Clip[]>>
 }
 
 const SelectedClipsContext = createContext<
@@ -36,11 +38,11 @@ export const SelectedClipsProvider = ({
 }: {
   children: ReactNode
 }) => {
-  const [selectedClipsIds, setSelectedClipsIds] = useState<string[]>([])
+  const [selectedClips, setSelectedClips] = useState<Clip[]>([])
 
   const value: SelectedClipsContextState = {
-    selectedClipsIds,
-    setSelectedClipsIds,
+    selectedClips,
+    setSelectedClips,
   }
 
   return (
