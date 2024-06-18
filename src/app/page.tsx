@@ -1,10 +1,17 @@
 'use client'
 
-import { GamesList } from '@/modules/games'
+import { GamesList, useGames } from '@/modules/games'
 import { SearchInput } from '@/modules/search'
 import { DownloadClip } from '@/modules/downloads'
 
 const HomePage = () => {
+  const {
+    filteredGamesData: gamesData,
+    handleLoadMore,
+    isFetching,
+    isLoading,
+  } = useGames()
+
   return (
     <>
       <DownloadClip />
@@ -20,7 +27,11 @@ const HomePage = () => {
         coloredText="Right Here"
         placeholder="Search twitch games..."
       />
-      <GamesList />
+      <GamesList
+        gamesList={gamesData}
+        isLoading={isLoading}
+        loadMore={{ handleLoadMore, isFetching }}
+      />
     </>
   )
 }
