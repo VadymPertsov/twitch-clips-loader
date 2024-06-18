@@ -1,7 +1,7 @@
 import axios from 'axios'
 import JSZip from 'jszip'
 
-export const maxDuration = 300
+export const maxDuration = 60
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url || '')
   const images = JSON.parse(searchParams.get('images') || '[]')
