@@ -57,7 +57,7 @@ const SearchInput = (props: SearchInputProps) => {
           className="absolute left-[50%] top-full z-10 max-h-[300px] w-full max-w-[600px] -translate-x-1/2 divide-y divide-gray-100 overflow-auto border border-violet-800 bg-white shadow"
         >
           {isLoading ? (
-            <Loading isFullscreen={false} />
+            <Loading />
           ) : filteredData?.length ? (
             <ul>
               {filteredData?.map(item => (

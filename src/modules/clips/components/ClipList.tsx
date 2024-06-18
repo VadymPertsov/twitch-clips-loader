@@ -42,7 +42,7 @@ const ClipList = memo((props: ClipListProps) => {
         <ClipFilter onClick={handleFilter} currentTimestamp={filter} />
       )}
       {isLoading ? (
-        <Loading isFullscreen={false} />
+        <Loading />
       ) : (
         <div className="grid grid-cols-4 gap-5 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
           {!clipsList.length ? (

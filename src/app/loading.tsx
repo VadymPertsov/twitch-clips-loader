@@ -5,7 +5,7 @@ interface LoadingProps {
 }
 
 const Loading = (props: LoadingProps) => {
-  const { isFullscreen = true } = props
+  const { isFullscreen = false } = props
 
   return (
     <div

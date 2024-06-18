@@ -17,7 +17,7 @@ const LoadMoreBtn = memo((props: LoadMoreBtnProps) => {
         onClick={onClick}
         disabled={isLoading}
       >
-        {isLoading ? <Loading isFullscreen={false} /> : <p>{label}</p>}
+        {isLoading ? <Loading /> : <p>{label}</p>}
       </button>
     </div>
   )

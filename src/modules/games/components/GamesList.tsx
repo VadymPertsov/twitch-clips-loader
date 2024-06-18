@@ -18,7 +18,7 @@ const GamesList = (props: GamesListProps) => {
     typeof loadMore === 'object' ? loadMore : {}
 
   return isLoading ? (
-    <Loading />
+    <Loading isFullscreen />
   ) : (
     <Layout
       title="Or you can choose the clips by the game!"

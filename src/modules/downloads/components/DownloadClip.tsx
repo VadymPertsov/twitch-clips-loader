@@ -82,7 +82,7 @@ const DownloadClip = () => {
             className="disabled:cursor-default disabled:bg-red-300 disabled:text-white"
             disabled={errorMessage.length !== 0}
           >
-            {isLoading ? <Loading isFullscreen={false} /> : 'Download'}
+            {isLoading ? <Loading /> : 'Download'}
           </ActionTag>
         </div>
       </form>
