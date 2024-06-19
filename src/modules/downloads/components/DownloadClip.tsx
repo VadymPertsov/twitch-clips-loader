@@ -74,7 +74,7 @@ const DownloadClip = () => {
             onChange={handleInputChange}
             type="text"
             className="block w-full border border-violet-800 p-4"
-            placeholder="Paste here the twitch clip link"
+            placeholder="Paste here the twitch clip link..."
             required
           />
           <ActionTag

@@ -2,7 +2,7 @@
 
 import { useSelectedClipsContext } from '@/context/SelectedClipsContext'
 import { ClipList } from '@/modules/clips'
-import { DownloadZip } from '@/modules/profile'
+import { DownloadZip } from '@/modules/downloads'
 
 const ProfilePage = () => {
   const { selectedClips: clipsData } = useSelectedClipsContext()
