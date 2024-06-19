@@ -1,8 +1,8 @@
 import GameItem from './GameItem'
 import LoadMoreBtn from '@/components/shared/LoadMoreBtn'
-import Loading from '@/app/loading'
 import { Game, LoadMoreOptions } from '@/types'
 import Layout from '@/components/shared/Layout/Layout'
+import Loader from '@/components/shared/Loader'
 
 interface GamesListProps {
   gamesList: Game[]
@@ -18,7 +18,7 @@ const GamesList = (props: GamesListProps) => {
     typeof loadMore === 'object' ? loadMore : {}
 
   return isLoading ? (
-    <Loading isFullscreen />
+    <Loader isFullscreen />
   ) : (
     <Layout
       title="Or you can choose the clips by the game!"

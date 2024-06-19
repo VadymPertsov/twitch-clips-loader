@@ -3,13 +3,12 @@
 import SearchIcon from '@/components/ui/SearchIcon'
 import SearchItem from './SearchItem'
 import LoadMoreBtn from '@/components/shared/LoadMoreBtn'
-import Loading from '@/app/loading'
 import Layout from '@/components/shared/Layout/Layout'
 import { useSearch } from '../hooks/useSearch'
 import { Category } from '@/types'
 import { HeadingProps } from '@/components/shared/Heading'
+import Loader from '@/components/shared/Loader'
 
-// TODO: research tanstack query
 interface SearchInputProps extends HeadingProps {
   category: Category
   placeholder?: string
@@ -57,7 +56,7 @@ const SearchInput = (props: SearchInputProps) => {
           className="absolute left-[50%] top-full z-10 max-h-[300px] w-full max-w-[600px] -translate-x-1/2 divide-y divide-gray-100 overflow-auto border border-violet-800 bg-white shadow"
         >
           {isLoading || !searchData.length ? (
-            <Loading />
+            <Loader className="p-5" />
           ) : searchData.length ? (
             <ul>
               {searchData.map(item => (

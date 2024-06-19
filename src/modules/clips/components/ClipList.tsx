@@ -5,9 +5,9 @@ import { useLightboxContext } from '@/context/LightboxContext'
 import ClipFilter from './ClipFilter'
 import LoadMoreBtn from '@/components/shared/LoadMoreBtn'
 import ClipLightbox from './ClipLightbox'
-import Loading from '@/app/loading'
 import { memo } from 'react'
 import { useSelectedClipsContext } from '@/context/SelectedClipsContext'
+import Loader from '@/components/shared/Loader'
 
 interface ClipListProps extends Pick<LayoutProps, 'title' | 'coloredText'> {
   clipsList: Clip[]
@@ -42,24 +42,26 @@ const ClipList = memo((props: ClipListProps) => {
         <ClipFilter onClick={handleFilter} currentTimestamp={filter} />
       )}
       {isLoading ? (
-        <Loading />
+        <Loader />
       ) : (
-        <div className="grid grid-cols-4 gap-5 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+        <>
           {!clipsList.length ? (
-            <p>Has no clips :(</p>
+            <p className="text-center">Has no clips :(</p>
           ) : (
-            clipsList.map((clip, index) => (
-              <ClipItem
-                key={clip.id}
-                clip={clip}
-                index={index}
-                handleSetIndex={setClipIndex}
-                handleSetSelectedClips={setSelectedClips}
-                selectedClips={selectedClips}
-              />
-            ))
+            <div className="grid grid-cols-4 gap-5 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+              {clipsList.map((clip, index) => (
+                <ClipItem
+                  key={clip.id}
+                  clip={clip}
+                  index={index}
+                  handleSetIndex={setClipIndex}
+                  handleSetSelectedClips={setSelectedClips}
+                  selectedClips={selectedClips}
+                />
+              ))}
+            </div>
           )}
-        </div>
+        </>
       )}
       {enableLoadMoreBtn &&
         handleLoadMore &&

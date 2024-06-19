@@ -3,8 +3,8 @@ import ActionTag from '@/components/ui/ActionTag'
 import { normalizeUrltoMp4 } from '@/utils/helpers-functions'
 import { FormEvent, useCallback, useEffect, useState } from 'react'
 import { getClipByUrl } from '../api'
-import Loading from '@/app/loading'
 import { useMutation } from 'react-query'
+import Loader from '@/components/shared/Loader'
 
 const twitchPath = 'clips.twitch.tv/'
 
@@ -68,7 +68,7 @@ const DownloadClip = () => {
       coloredText="By the link!"
     >
       <form className="mx-auto max-w-[600px]" onSubmit={handleSubmit}>
-        <div className="flex gap-5">
+        <div className="flex gap-5 md:flex-wrap md:justify-center">
           <input
             value={twitchClipUrl}
             onChange={handleInputChange}
@@ -83,7 +83,7 @@ const DownloadClip = () => {
             className="disabled:cursor-default disabled:bg-red-300 disabled:text-white"
             disabled={errorMessage.length !== 0}
           >
-            {isLoading ? <Loading /> : 'Download'}
+            {isLoading ? <Loader /> : 'Download'}
           </ActionTag>
         </div>
       </form>

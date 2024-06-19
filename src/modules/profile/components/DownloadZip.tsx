@@ -1,5 +1,5 @@
-import Loading from '@/app/loading'
 import Container from '@/components/shared/Layout/Container'
+import Loader from '@/components/shared/Loader'
 import ActionTag from '@/components/ui/ActionTag'
 import { Clip } from '@/types'
 import { normalizeUrltoMp4 } from '@/utils/helpers-functions'
@@ -47,7 +47,7 @@ const DownloadZip = (props: DownloadZipProps) => {
   return (
     <Container className="flex w-full flex-col items-center justify-center gap-3 pt-10">
       <ActionTag as="button" onClick={downloadAllFiles}>
-        {isLoading ? <Loading /> : 'Download All in ZIP'}
+        {isLoading ? <Loader /> : 'Download All in ZIP'}
       </ActionTag>
       {isLoading && <p>Please wait a bit...</p>}
     </Container>

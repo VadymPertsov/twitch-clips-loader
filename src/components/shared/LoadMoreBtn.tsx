@@ -1,5 +1,5 @@
-import Loading from '@/app/loading'
 import { memo } from 'react'
+import Loader from './Loader'
 
 interface LoadMoreBtnProps {
   onClick: () => void
@@ -17,7 +17,7 @@ const LoadMoreBtn = memo((props: LoadMoreBtnProps) => {
         onClick={onClick}
         disabled={isLoading}
       >
-        {isLoading ? <Loading /> : <p>{label}</p>}
+        {isLoading ? <Loader /> : <p>{label}</p>}
       </button>
     </div>
   )
