@@ -19,7 +19,7 @@ const SearchInput = (props: SearchInputProps) => {
   const { category, placeholder = 'Search...', ...rest } = props
 
   const {
-    filteredData,
+    filteredData: searchData,
     dropdownRef,
     handleFocus,
     handleInputChange,
@@ -56,11 +56,11 @@ const SearchInput = (props: SearchInputProps) => {
           ref={dropdownRef}
           className="absolute left-[50%] top-full z-10 max-h-[300px] w-full max-w-[600px] -translate-x-1/2 divide-y divide-gray-100 overflow-auto border border-violet-800 bg-white shadow"
         >
-          {isLoading ? (
+          {isLoading || !searchData.length ? (
             <Loading />
-          ) : filteredData?.length ? (
+          ) : searchData.length ? (
             <ul>
-              {filteredData?.map(item => (
+              {searchData.map(item => (
                 <SearchItem key={item.id} item={item} />
               ))}
               <LoadMoreBtn isLoading={isFetching} onClick={handleLoadMore} />

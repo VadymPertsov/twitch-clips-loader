@@ -8,14 +8,19 @@ import {
 } from '../api'
 import { Category, Channel, GameCategory } from '@/types'
 import { filterUniqueListById } from '@/utils/helpers-functions'
+import { useMutation, useQuery } from 'react-query'
+
+interface ApiResponse {
+  data: Array<Channel | GameCategory>
+  pagination: {
+    cursor: string
+  }
+}
 
 export const useSearch = (category: Category) => {
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const [data, setData] = useState<(Channel | GameCategory)[]>([])
-
-  const [isLoading, setLoading] = useState<boolean>(true)
-  const [isFetching, setFetching] = useState<boolean>(false)
   const [cursor, setCursor] = useState<string>('')
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
@@ -23,29 +28,40 @@ export const useSearch = (category: Category) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    if (debouncedSearchTerm) {
-      try {
-        const data =
-          category === 'channel'
-            ? await getChannels(debouncedSearchTerm)
-            : await getCategories(debouncedSearchTerm)
-        if (data) {
-          setData(data.data)
-          setCursor(data.pagination.cursor)
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      } finally {
-        setLoading(false)
+  const { isLoading } = useQuery<ApiResponse | null>(
+    ['search', category, debouncedSearchTerm],
+    async () => {
+      if (debouncedSearchTerm) {
+        return category === 'game'
+          ? getCategories(debouncedSearchTerm)
+          : getChannels(debouncedSearchTerm)
       }
+      return null
+    },
+    {
+      enabled: !!debouncedSearchTerm,
+      onSuccess: res => {
+        if (res) {
+          setData(res.data)
+          setCursor(res.pagination.cursor)
+        }
+      },
     }
-  }, [debouncedSearchTerm])
+  )
 
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
+  const { mutate: fetchMoreChannels, isLoading: isFetching } =
+    useMutation<ApiResponse>(
+      () =>
+        category === 'game'
+          ? getMoreCategories(debouncedSearchTerm, cursor)
+          : getMoreChannels(debouncedSearchTerm, cursor),
+      {
+        onSuccess: res => {
+          setData(prev => [...prev, ...res.data])
+          setCursor(res.pagination.cursor)
+        },
+      }
+    )
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -66,24 +82,15 @@ export const useSearch = (category: Category) => {
   }, [inputRef, dropdownRef])
 
   const filteredData = useMemo(() => filterUniqueListById(data), [data])
+
   // TODO: if cursor check
   const handleLoadMore = useCallback(async () => {
-    setFetching(true)
     try {
-      const data =
-        category === 'channel'
-          ? await getMoreChannels(debouncedSearchTerm, cursor)
-          : await getMoreCategories(debouncedSearchTerm, cursor)
-      if (data) {
-        setData(prev => [...prev, ...data.data])
-        setCursor(data.pagination.cursor)
-      }
+      await fetchMoreChannels()
     } catch (error) {
-      console.error('Error fetching data:', error)
-    } finally {
-      setFetching(false)
+      console.error('Error in fetchMoreChannels:', error)
     }
-  }, [debouncedSearchTerm, cursor, category])
+  }, [fetchMoreChannels])
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

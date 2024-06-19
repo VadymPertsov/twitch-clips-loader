@@ -13,7 +13,7 @@ const ClipsPage = (props: ClipsPageProps) => {
   } = props
 
   const {
-    isLoading,
+    isOwnLoading: isLoading,
     filteredClipsData: clipsData,
     handleLoadMore,
     isFetching,

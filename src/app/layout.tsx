@@ -5,6 +5,7 @@ import './globals.css'
 import Navbar from '@/components/shared/Header/Navbar'
 import { LightboxProvider } from '@/context/LightboxContext'
 import { SelectedClipsProvider } from '@/context/SelectedClipsContext'
+import ReactQueryProvider from '@/context/ReactQueryProvider'
 
 const SpaceMono = Space_Mono({
   weight: '400',
@@ -31,15 +32,17 @@ export default function RootLayout(props: RootLayoutProps) {
   return (
     <LightboxProvider>
       <SelectedClipsProvider>
-        <html lang="en">
-          <body className={SpaceMono.className}>
-            <div className="flex min-h-full flex-col overflow-hidden">
-              <Navbar />
-              <main className="flex-grow">{children}</main>
-              <div>Footer</div>
-            </div>
-          </body>
-        </html>
+        <ReactQueryProvider>
+          <html lang="en">
+            <body className={SpaceMono.className}>
+              <div className="flex min-h-full flex-col overflow-hidden">
+                <Navbar />
+                <main className="flex-grow">{children}</main>
+                <div>Footer</div>
+              </div>
+            </body>
+          </html>
+        </ReactQueryProvider>
       </SelectedClipsProvider>
     </LightboxProvider>
   )

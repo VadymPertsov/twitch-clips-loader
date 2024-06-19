@@ -1,33 +1,31 @@
 'use client'
 
 import { filterUniqueListById } from '@/utils/helpers-functions'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { getGames, getMoreGames } from '../api'
 import { Game } from '@/types'
+import { useMutation, useQuery } from 'react-query'
 
 export const useGames = () => {
   const [gamesData, setGamesData] = useState<Game[]>([])
-  const [isLoading, setLoading] = useState<boolean>(true)
-  const [isFetching, setFetching] = useState<boolean>(false)
   const [cursor, setCursor] = useState<string>('')
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      setLoading(true)
-      try {
-        const games = await getGames()
-        if (games) {
-          setGamesData(games.data)
-          setCursor(games.pagination.cursor)
-        }
-      } catch (error) {
-        console.error('Error fetching games:', error)
-      } finally {
-        setLoading(false)
-      }
+  const { isLoading } = useQuery('games', getGames, {
+    onSuccess: res => {
+      setGamesData(res.data)
+      setCursor(res.pagination.cursor)
+    },
+  })
+
+  const { mutate: fetchMoreGames, isLoading: isFetching } = useMutation(
+    () => getMoreGames(cursor),
+    {
+      onSuccess: res => {
+        setGamesData(prev => [...prev, ...res.data])
+        setCursor(res.pagination.cursor)
+      },
     }
-    fetchGames()
-  }, [])
+  )
 
   const filteredGamesData = useMemo(
     () => filterUniqueListById(gamesData),
@@ -35,19 +33,12 @@ export const useGames = () => {
   )
 
   const handleLoadMore = useCallback(async () => {
-    setFetching(true)
     try {
-      const games = await getMoreGames(cursor)
-      if (games) {
-        setGamesData(prev => [...prev, ...games.data])
-        setCursor(games.pagination.cursor)
-      }
+      await fetchMoreGames()
     } catch (error) {
-      console.error('Error fetching games:', error)
-    } finally {
-      setFetching(false)
+      console.error('Error in handleLoadMore:', error)
     }
-  }, [cursor])
+  }, [fetchMoreGames])
 
   return {
     isLoading,
