@@ -40,7 +40,7 @@ const ClipItem = memo((props: ClipItemProps) => {
     } else {
       handleSetSelectedClips(prev => [...prev, clip])
     }
-  }, [handleSetSelectedClips, selectedClips, clip])
+  }, [handleSetSelectedClips, selectedClips, isClipInProfile, clip])
 
   return (
     <div className="flex flex-col p-3 shadow-md hover:shadow-lg">
@@ -75,7 +75,7 @@ const ClipItem = memo((props: ClipItemProps) => {
         <ActionTag variant="primary" href={normalizeUrltoMp4(thumbnail_url)}>
           Download
         </ActionTag>
-        <ActionTag variant="primary" href={url}>
+        <ActionTag target="_blank" variant="primary" href={url}>
           Twitch link
         </ActionTag>
       </div>

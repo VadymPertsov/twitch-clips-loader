@@ -13,7 +13,7 @@ const ClipFilter = memo((props: ClipFilterProps) => {
   const { onClick, currentTimestamp } = props
 
   return (
-    <div className="flex items-center justify-end gap-5 py-5 font-semibold">
+    <div className="flex flex-wrap items-center justify-end gap-5 py-5 font-semibold">
       <h4>Filter by</h4>
       <div className="flex flex-row gap-5">
         {timestamps.map(time => (

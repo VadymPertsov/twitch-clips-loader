@@ -9,7 +9,7 @@ const ProfilePage = () => {
 
   return (
     <>
-      <DownloadZip clipsList={clipsData} />
+      {clipsData.length ? <DownloadZip clipsList={clipsData} /> : null}
       <ClipList
         clipsList={clipsData}
         isLoading={false}

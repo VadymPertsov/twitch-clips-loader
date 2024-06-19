@@ -19,6 +19,7 @@ type ActionTagProps = BaseTagProps &
       })
     | (LinkType & {
         as?: 'a'
+        target?: '_blank'
       })
   )
 //TODO: add prop target to link

@@ -11,14 +11,14 @@ const Navbar = () => {
   const { selectedClips } = useSelectedClipsContext()
 
   return (
-    <header className="flex w-full items-center justify-between p-5 shadow-md shadow-violet-100">
+    <header className="flex w-full items-center justify-between p-5 shadow-md shadow-violet-100 md:flex-wrap md:justify-center md:gap-y-5">
       <Link href={ROUTES.HOME_PAGE}>
         <Image
           src={logo}
           alt="Logo"
           width={400}
           height={155}
-          className="max-w-[300px]"
+          className="max-w-[300px] md:max-w-[150px]"
         />
       </Link>
       <nav className="ml-4 self-center">
