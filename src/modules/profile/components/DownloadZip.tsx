@@ -47,9 +47,9 @@ const DownloadZip = (props: DownloadZipProps) => {
   return (
     <Container className="flex w-full flex-col items-center justify-center gap-3 pt-10">
       <ActionTag as="button" onClick={downloadAllFiles}>
-        {!isLoading ? <Loading /> : 'Download All in ZIP'}
+        {isLoading ? <Loading /> : 'Download All in ZIP'}
       </ActionTag>
-      {!isLoading && <p>Please wait a bit...</p>}
+      {isLoading && <p>Please wait a bit...</p>}
     </Container>
   )
 }
