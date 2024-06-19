@@ -18,7 +18,7 @@ export const useGames = () => {
   })
 
   const { mutate: fetchMoreGames, isLoading: isFetching } = useMutation(
-    () => getMoreGames(cursor),
+    async () => await getMoreGames(cursor),
     {
       onSuccess: res => {
         setGamesData(prev => [...prev, ...res.data])

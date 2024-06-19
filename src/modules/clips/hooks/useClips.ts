@@ -18,7 +18,10 @@ export const useClips = (category: Category, id: string) => {
 
   const { isLoading } = useQuery(
     ['clips', category, id],
-    () => (category === 'game' ? getClipsByGame(id) : getClipsByChannel(id)),
+    async () =>
+      category === 'game'
+        ? await getClipsByGame(id)
+        : await getClipsByChannel(id),
     {
       onSuccess: res => {
         setClipsData(res.data)
@@ -28,10 +31,10 @@ export const useClips = (category: Category, id: string) => {
   )
 
   const { mutate: fetchMoreClips, isLoading: isFetching } = useMutation(
-    () =>
+    async () =>
       category === 'game'
-        ? getMoreClipsByGame(id, filter, cursor)
-        : getMoreClipsByChannel(id, filter, cursor),
+        ? await getMoreClipsByGame(id, filter, cursor)
+        : await getMoreClipsByChannel(id, filter, cursor),
     {
       onSuccess: res => {
         setClipsData(prev => [...prev, ...res.data])
@@ -42,11 +45,11 @@ export const useClips = (category: Category, id: string) => {
 
   const { mutate: fetchClipsWithFilter, isLoading: isLoadingFilter } =
     useMutation(
-      (newFilter: Timestamps) => {
+      async (newFilter: Timestamps) => {
         setFilter(newFilter)
         return category === 'game'
-          ? getClipsByGame(id, newFilter)
-          : getClipsByChannel(id, newFilter)
+          ? await getClipsByGame(id, newFilter)
+          : await getClipsByChannel(id, newFilter)
       },
       {
         onSuccess: res => {

@@ -4,6 +4,7 @@ import { normalizeUrltoMp4 } from '@/utils/helpers-functions'
 import { FormEvent, useCallback, useEffect, useState } from 'react'
 import { getClipByUrl } from '../api'
 import Loading from '@/app/loading'
+import { useMutation } from 'react-query'
 
 const twitchPath = 'clips.twitch.tv/'
 
@@ -11,7 +12,18 @@ const DownloadClip = () => {
   const [twitchClipUrl, setTwitchClipUrl] = useState<string>('')
   const [downloadUrl, setDownloadUrl] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const { isLoading, mutate: fetchClipByUrl } = useMutation(
+    async (clipId: string) => await getClipByUrl(clipId),
+    {
+      onSuccess: clip => {
+        if (clip) {
+          const normalizedUrl = normalizeUrltoMp4(clip.data[0].thumbnail_url)
+          setDownloadUrl(normalizedUrl)
+        }
+      },
+    }
+  )
 
   useEffect(() => {
     if (downloadUrl) {
@@ -33,25 +45,14 @@ const DownloadClip = () => {
 
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
-      setIsLoading(true)
       e.preventDefault()
 
       const clipId = extractClipId(twitchClipUrl)
       if (!clipId) return
 
-      try {
-        const clip = await getClipByUrl(clipId)
-        if (!clip) return
-
-        const normalizedUrl = normalizeUrltoMp4(clip.data[0].thumbnail_url)
-        setDownloadUrl(normalizedUrl)
-      } catch (error) {
-        console.error('Error fetching clip:', error)
-      } finally {
-        setIsLoading(false)
-      }
+      fetchClipByUrl(clipId)
     },
-    [twitchClipUrl]
+    [fetchClipByUrl, twitchClipUrl]
   )
 
   const handleInputChange = useCallback(

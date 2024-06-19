@@ -33,8 +33,8 @@ export const useSearch = (category: Category) => {
     async () => {
       if (debouncedSearchTerm) {
         return category === 'game'
-          ? getCategories(debouncedSearchTerm)
-          : getChannels(debouncedSearchTerm)
+          ? await getCategories(debouncedSearchTerm)
+          : await getChannels(debouncedSearchTerm)
       }
       return null
     },
@@ -51,10 +51,10 @@ export const useSearch = (category: Category) => {
 
   const { mutate: fetchMoreChannels, isLoading: isFetching } =
     useMutation<ApiResponse>(
-      () =>
+      async () =>
         category === 'game'
-          ? getMoreCategories(debouncedSearchTerm, cursor)
-          : getMoreChannels(debouncedSearchTerm, cursor),
+          ? await getMoreCategories(debouncedSearchTerm, cursor)
+          : await getMoreChannels(debouncedSearchTerm, cursor),
       {
         onSuccess: res => {
           setData(prev => [...prev, ...res.data])
