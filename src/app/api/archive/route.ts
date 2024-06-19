@@ -2,37 +2,39 @@ import axios from 'axios'
 import JSZip from 'jszip'
 
 export const maxDuration = 60
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url || '')
-  const images = JSON.parse(searchParams.get('images') || '[]')
+export async function POST(req: Request) {
+  //TODO: try to set S3 for files download from server
+  const { urls } = await req.json()
 
-  if (!Array.isArray(images) || images.length === 0) {
-    throw new Error('No images provided or invalid format')
-  }
-
-  const downloads = await Promise.all(
-    images.map(async (image: string, index: number) => {
-      const response = await axios.get(image, { responseType: 'arraybuffer' })
-      return {
-        image,
-        data: response.data,
-        index,
-      }
+  if (!urls || !Array.isArray(urls)) {
+    return new Response(JSON.stringify({ error: 'Invalid input' }), {
+      status: 400,
     })
-  )
+  }
 
   const zip = new JSZip()
 
-  downloads.forEach(download => {
-    zip.file(`image_${download.index}.mp4`, download.data)
-  })
+  try {
+    await Promise.all(
+      urls.map(async url => {
+        const response = await axios.get(url, { responseType: 'arraybuffer' })
+        const filename = url.split('/').pop()
+        zip.file(filename, response.data)
+      })
+    )
 
-  const archive = await zip.generateAsync({ type: 'blob' })
+    const content = await zip.generateAsync({ type: 'nodebuffer' })
 
-  return new Response(archive, {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/zip',
-    },
-  })
+    return new Response(content, {
+      headers: {
+        'Content-Disposition': 'attachment; filename="files.zip"',
+        'Content-Type': 'application/zip',
+      },
+      status: 200,
+    })
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error }), {
+      status: 500,
+    })
+  }
 }

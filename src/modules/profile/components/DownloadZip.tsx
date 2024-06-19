@@ -17,36 +17,39 @@ const DownloadZip = (props: DownloadZipProps) => {
 
   const urls = clipsList.map(clip => normalizeUrltoMp4(clip.thumbnail_url))
 
-  const handleDownload = async () => {
+  const downloadAllFiles = async () => {
     setIsLoading(true)
     try {
-      const response = await axios.get(
-        `/api/archive?images=${encodeURIComponent(JSON.stringify(urls))}`,
-        {
-          responseType: 'blob',
-        }
+      const response = await axios.post(
+        '/api/archive',
+        { urls },
+        { responseType: 'blob' }
       )
 
+      if (response.status !== 200) {
+        throw new Error('Failed to download files')
+      }
+
       const url = window.URL.createObjectURL(new Blob([response.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', 'clips.zip')
-      document.body.appendChild(link)
-      link.click()
-      link.parentNode?.removeChild(link)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'files.zip'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
     } catch (error) {
-      console.error(error)
+      console.error('Error downloading files:', error)
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <Container className="flex w-full justify-center pt-10">
-      <ActionTag as="button" onClick={handleDownload}>
-        {isLoading ? <Loading /> : 'Download All in ZIP'}
+    <Container className="flex w-full flex-col items-center justify-center gap-3 pt-10">
+      <ActionTag as="button" onClick={downloadAllFiles}>
+        {!isLoading ? <Loading /> : 'Download All in ZIP'}
       </ActionTag>
-      {isLoading && <p>Please wait a bit...</p>}
+      {!isLoading && <p>Please wait a bit...</p>}
     </Container>
   )
 }
