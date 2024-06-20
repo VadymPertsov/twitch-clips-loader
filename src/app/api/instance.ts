@@ -1,3 +1,7 @@
+import {
+  LOCAL_STORAGE_EXPIRATION_KEY,
+  LOCAL_STORAGE_TOKEN_KEY,
+} from '@/constants/localstorage'
 import axios, { AxiosResponse } from 'axios'
 
 interface TwitchTokenResponse {
@@ -5,9 +9,6 @@ interface TwitchTokenResponse {
   expires_in: number
   token_type: string
 }
-
-const LOCAL_STORAGE_TOKEN_KEY = 'twitch_access_token'
-const LOCAL_STORAGE_EXPIRATION_KEY = 'twitch_token_expiration'
 
 export const Axios = axios.create({
   baseURL: 'https://api.twitch.tv/helix',

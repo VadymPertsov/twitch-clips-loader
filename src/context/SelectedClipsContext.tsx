@@ -1,5 +1,6 @@
 'use client'
 
+import { LOCAL_STORAGE_SELECTED_CLIPS } from '@/constants/localstorage'
 import { Clip } from '@/types'
 import {
   Dispatch,
@@ -7,6 +8,7 @@ import {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from 'react'
 
@@ -38,6 +40,13 @@ export const SelectedClipsProvider = ({
   children: ReactNode
 }) => {
   const [selectedClips, setSelectedClips] = useState<Clip[]>([])
+
+  useEffect(() => {
+    const savedClips = localStorage.getItem(LOCAL_STORAGE_SELECTED_CLIPS)
+    if (savedClips) {
+      setSelectedClips(JSON.parse(savedClips))
+    }
+  }, [])
 
   const value: SelectedClipsContextState = {
     selectedClips,

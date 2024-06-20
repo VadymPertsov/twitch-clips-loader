@@ -1,6 +1,7 @@
 import Image from '@/components/shared/Image'
 import ActionTag from '@/components/ui/ActionTag'
 import EyeIcon from '@/components/ui/EyeIcon'
+import { LOCAL_STORAGE_SELECTED_CLIPS } from '@/constants/localstorage'
 import { Clip } from '@/types'
 import {
   formatTimeAgo,
@@ -37,8 +38,10 @@ const ClipItem = memo((props: ClipItemProps) => {
     if (isClipInProfile) {
       const data = selectedClips.filter(item => item.id !== clip.id)
       handleSetSelectedClips(data)
+      removeClipFromLocaleStorage(clip)
     } else {
       handleSetSelectedClips(prev => [...prev, clip])
+      saveClipToLocaleStorage(clip)
     }
   }, [handleSetSelectedClips, selectedClips, isClipInProfile, clip])
 
@@ -85,6 +88,22 @@ const ClipItem = memo((props: ClipItemProps) => {
 
 function isExistInProfile(clips: Clip[], id: string): boolean {
   return clips.some(clip => clip.id === id)
+}
+
+function saveClipToLocaleStorage(clip: Clip): void {
+  const savedClips = JSON.parse(
+    localStorage.getItem(LOCAL_STORAGE_SELECTED_CLIPS) || '[]'
+  )
+  savedClips.push(clip)
+  localStorage.setItem(LOCAL_STORAGE_SELECTED_CLIPS, JSON.stringify(savedClips))
+}
+
+function removeClipFromLocaleStorage(clip: Clip) {
+  let savedClips = JSON.parse(
+    localStorage.getItem(LOCAL_STORAGE_SELECTED_CLIPS) || '[]'
+  )
+  savedClips = savedClips.filter((item: Clip) => item.id !== clip.id)
+  localStorage.setItem(LOCAL_STORAGE_SELECTED_CLIPS, JSON.stringify(savedClips))
 }
 
 export default ClipItem
