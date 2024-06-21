@@ -17,9 +17,9 @@ const GameItem = memo((props: GameItemProps) => {
   return (
     <Link
       href={`${ROUTES.CLIPS_BY_GAME}/${gameId}`}
-      className="p-3 shadow-md hover:shadow-lg"
+      className="rounded-md p-3 shadow-lg hover:shadow-violet-400"
     >
-      <div className="overflow-hidden">
+      <div className="overflow-hidden rounded-md">
         <Image
           src={normalizeImagePath(box_art_url)}
           alt="Game Thumbnail"

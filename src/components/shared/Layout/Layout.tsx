@@ -12,7 +12,7 @@ const Layout = (props: LayoutProps) => {
   const { children, className, title, coloredText } = props
 
   return (
-    <section className={cn('pb-5 pt-10 shadow-md shadow-violet-50', className)}>
+    <section className={cn('pt-12 md:pb-3 md:pt-6', className)}>
       <Container>
         {title && <Heading title={title} coloredText={coloredText} />}
         {children}

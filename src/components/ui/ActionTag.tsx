@@ -33,11 +33,12 @@ const ActionTag = (props: ActionTagProps) => {
     ...rest
   } = props
   const tagCn = cn(
-    'border border-violet-800 transition-colors hover:bg-violet-400 hover:text-white',
+    'border block rounded-md shadow-md border-violet-900 transition-colors hover:bg-violet-400 hover:text-white',
     {
       'bg-violet-700 text-white': isActive,
       'text-sm bg-violet-700 text-white p-2': variant === 'primary',
       'p-3 text-base': variant === 'default',
+      'bg-white': variant === 'default' && !isActive,
     }
   )
 

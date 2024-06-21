@@ -46,10 +46,13 @@ const ClipItem = memo((props: ClipItemProps) => {
   }, [handleSetSelectedClips, selectedClips, isClipInProfile, clip])
 
   return (
-    <div className="flex flex-col p-3 shadow-md hover:shadow-lg">
-      <div onClick={() => handleSetIndex(index)} className="cursor-pointer">
+    <div className="flex flex-col rounded-md p-3 shadow-lg hover:shadow-violet-400">
+      <div
+        onClick={() => handleSetIndex(index)}
+        className="mb-1 cursor-pointer"
+      >
         <div className="relative">
-          <div className="overflow-hidden">
+          <div className="overflow-hidden rounded-md">
             <Image
               src={thumbnail_url}
               alt="Clip Thumbnail"
@@ -58,23 +61,30 @@ const ClipItem = memo((props: ClipItemProps) => {
               className="object-cover transition-transform hover:scale-105"
             />
           </div>
-          <span className="absolute bottom-0 right-0 flex items-center gap-2 rounded-tl-xl bg-violet-700 p-2 text-sm text-white">
+          <span className="absolute bottom-0 right-0 flex items-center gap-2 rounded-br-md rounded-tl-md bg-violet-700 bg-opacity-70 p-2 text-xs font-semibold text-white">
             <EyeIcon />
             {normalizeViewCount(view_count)}
           </span>
+          <span className="absolute bottom-0 left-0 flex items-center gap-2 rounded-bl-md rounded-tr-md bg-violet-700 bg-opacity-70 p-2 text-xs font-semibold text-white">
+            {formatTimeAgo(new Date(created_at), new Date())}
+          </span>
         </div>
       </div>
-      <ActionTag as="button" variant="primary" onClick={handleSetSelected}>
+      <ActionTag
+        as="button"
+        variant="primary"
+        className="mb-2"
+        onClick={handleSetSelected}
+      >
         {isClipInProfile ? 'Remove' : 'Select'}
       </ActionTag>
-      <div className="grow pt-2">
+      <div className="mb-2 grow">
         <h5 className="line-clamp-2 text-lg font-semibold" title={title}>
           {title}
         </h5>
         <p>{broadcaster_name}</p>
-        <p>{formatTimeAgo(new Date(created_at), new Date())}</p>
       </div>
-      <div className="flex items-center justify-between gap-5 pt-2">
+      <div className="flex items-center justify-between gap-5">
         <ActionTag variant="primary" href={normalizeUrltoMp4(thumbnail_url)}>
           Download
         </ActionTag>

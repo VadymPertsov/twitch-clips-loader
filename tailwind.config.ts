@@ -18,6 +18,9 @@ const config: Config = {
 
       sm: { max: '575.98px' },
       // => @media (max-width: 575.98px) { ... }
+
+      xs: { max: '374.98px' },
+      // => @media (max-width: 374.98px) { ... }
     },
   },
 }

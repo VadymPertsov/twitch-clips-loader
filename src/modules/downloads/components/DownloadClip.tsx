@@ -5,6 +5,7 @@ import { FormEvent, useCallback, useEffect, useState } from 'react'
 import { getClipByUrl } from '../api'
 import { useMutation } from 'react-query'
 import Loader from '@/components/shared/Loader'
+import Input from '@/components/shared/Input'
 
 const twitchPath = 'clips.twitch.tv/'
 
@@ -69,17 +70,17 @@ const DownloadClip = () => {
     >
       <form className="mx-auto max-w-[600px]" onSubmit={handleSubmit}>
         <div className="flex gap-5 md:flex-wrap md:justify-center">
-          <input
+          <Input
             value={twitchClipUrl}
             onChange={handleInputChange}
             type="text"
-            className="block w-full border border-violet-800 p-4"
             placeholder="Paste here the twitch clip link..."
             required
           />
           <ActionTag
             as="button"
             type="submit"
+            isActive
             className="disabled:cursor-default disabled:bg-red-300 disabled:text-white"
             disabled={errorMessage.length !== 0}
           >

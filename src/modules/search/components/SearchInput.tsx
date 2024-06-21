@@ -8,6 +8,7 @@ import { useSearch } from '../hooks/useSearch'
 import { Category } from '@/types'
 import { HeadingProps } from '@/components/shared/Heading'
 import Loader from '@/components/shared/Loader'
+import Input from '@/components/shared/Input'
 
 interface SearchInputProps extends HeadingProps {
   category: Category
@@ -36,15 +37,14 @@ const SearchInput = (props: SearchInputProps) => {
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
           <SearchIcon />
         </div>
-        {/* TODO: make a Input compoennt */}
-        <input
+        <Input
           ref={inputRef}
           value={searchTerm}
           onChange={handleInputChange}
           onFocus={handleFocus}
           type="text"
+          className="ps-10"
           id="default-search"
-          className="block w-full border border-violet-800 p-4 ps-10"
           placeholder={placeholder}
           required
         />

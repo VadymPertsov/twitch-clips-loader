@@ -30,7 +30,6 @@ const DownloadZip = (props: DownloadZipProps) => {
       if (response.status !== 200) {
         throw new Error('Failed to download files')
       }
-
       return response.data
     },
     {
@@ -59,7 +58,16 @@ const DownloadZip = (props: DownloadZipProps) => {
       >
         {isLoading ? <Loader /> : 'Download All in ZIP'}
       </ActionTag>
-      {isLoading && <p>Please wait a bit...</p>}
+      {isLoading && (
+        <>
+          <p>Please wait a bit...</p>
+          <p className="text-xs italic text-red-400">
+            If the download takes more than 1 minute, you will receive an error
+            and a damaged archive. Try selecting fewer clips. A fix for this
+            issue is under development.
+          </p>
+        </>
+      )}
     </Container>
   )
 }

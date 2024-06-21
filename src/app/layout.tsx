@@ -38,7 +38,9 @@ export default function RootLayout(props: RootLayoutProps) {
             <body className={SpaceMono.className}>
               <div className="flex min-h-full flex-col overflow-hidden">
                 <Navbar />
-                <main className="flex-grow">{children}</main>
+                <main className="flex-grow pt-[95px] md:pt-[75px]">
+                  {children}
+                </main>
                 <Footer />
               </div>
             </body>
