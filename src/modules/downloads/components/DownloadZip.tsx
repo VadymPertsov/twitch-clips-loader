@@ -54,7 +54,7 @@ const DownloadZip = (props: DownloadZipProps) => {
         disabled={isLoading}
         as="button"
         onClick={() => downloadAllFiles()}
-        title="If the download takes more than 1 minute, you will receive an error and a damaged archive. Try selecting fewer clips. A fix for this issue is under development."
+        title="If the download takes more than 1 minute, you will receive an error and a damaged archive. Try selecting fewer clips or clear your cache. A fix for this issue is under development."
       >
         {isLoading ? <Loader /> : 'Download All in ZIP'}
       </ActionTag>
@@ -63,8 +63,8 @@ const DownloadZip = (props: DownloadZipProps) => {
           <p>Please wait a bit...</p>
           <p className="text-xs italic text-red-400">
             If the download takes more than 1 minute, you will receive an error
-            and a damaged archive. Try selecting fewer clips. A fix for this
-            issue is under development.
+            and a damaged archive. Try selecting fewer clips or clear your
+            cache. A fix for this issue is under development.
           </p>
         </>
       )}
