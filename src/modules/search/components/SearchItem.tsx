@@ -25,9 +25,9 @@ const SearchItem = <T extends Channel | GameCategory>({
               <Image
                 src={thumbnail_url}
                 alt="Search Item Thumbnail"
-                width={60}
-                height={60}
-                className="max-w-[60px] rounded-full"
+                width={40}
+                height={40}
+                className="h-[40px] w-[40px] rounded-full object-cover"
               />
               {is_live && (
                 <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border border-green-900 bg-green-500"></span>
@@ -55,9 +55,9 @@ const SearchItem = <T extends Channel | GameCategory>({
               <Image
                 src={box_art_url}
                 alt="Search Item Thumbnail"
-                width={60}
-                height={60}
-                className="max-w-[60px] rounded-full"
+                width={40}
+                height={40}
+                className="h-[40px] w-[40px] rounded-full object-cover"
               />
             </div>
             {name}
