@@ -29,6 +29,7 @@ const SearchInput = (props: SearchInputProps) => {
     isFocused,
     isLoading,
     searchTerm,
+    cursor: hasMoreItems,
   } = useSearch(category)
 
   return (
@@ -55,17 +56,21 @@ const SearchInput = (props: SearchInputProps) => {
           ref={dropdownRef}
           className="absolute left-[50%] top-full z-10 max-h-[300px] w-full max-w-[600px] -translate-x-1/2 divide-y divide-gray-100 overflow-auto border border-violet-800 bg-white shadow"
         >
-          {isLoading || !searchData.length ? (
+          {isLoading ? (
             <Loader className="p-5" />
-          ) : searchData.length ? (
-            <ul>
-              {searchData.map(item => (
-                <SearchItem key={item.id} item={item} />
-              ))}
-              <LoadMoreBtn isLoading={isFetching} onClick={handleLoadMore} />
-            </ul>
           ) : (
-            <p className="p-5 text-center">{`Has no "${searchTerm}" channel :(`}</p>
+            <>
+              <ul>
+                {searchData.map(item => (
+                  <SearchItem key={item.id} item={item} />
+                ))}
+              </ul>
+              {hasMoreItems ? (
+                <LoadMoreBtn isLoading={isFetching} onClick={handleLoadMore} />
+              ) : (
+                <p className="p-5 text-center">{`Has no "${searchTerm}" channel more :(`}</p>
+              )}
+            </>
           )}
         </div>
       )}

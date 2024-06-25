@@ -22,15 +22,18 @@ export const useSearch = (category: Category) => {
   const [isFocused, setIsFocused] = useState<boolean>(false)
   const [data, setData] = useState<(Channel | GameCategory)[]>([])
   const [cursor, setCursor] = useState<string>('')
+  // For initial loading state = true
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const { isLoading } = useQuery<ApiResponse | null>(
+  const query = useQuery<ApiResponse | null>(
     ['search', category, debouncedSearchTerm],
     async () => {
+      setIsLoading(true)
       if (debouncedSearchTerm) {
         return category === 'game'
           ? await getCategories(debouncedSearchTerm)
@@ -45,7 +48,9 @@ export const useSearch = (category: Category) => {
           setData(res.data)
           setCursor(res.pagination.cursor)
         }
+        setIsLoading(false)
       },
+      onError: () => setIsLoading(false),
     }
   )
 
@@ -64,6 +69,8 @@ export const useSearch = (category: Category) => {
     )
 
   useEffect(() => {
+    console.log(inputRef, dropdownRef)
+
     const handleClickOutside = (event: MouseEvent) => {
       if (
         inputRef.current &&
@@ -114,5 +121,6 @@ export const useSearch = (category: Category) => {
     isFocused,
     isLoading,
     isFetching,
+    cursor,
   }
 }
