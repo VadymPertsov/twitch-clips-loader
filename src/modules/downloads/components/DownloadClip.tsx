@@ -88,7 +88,9 @@ const DownloadClip = () => {
           </ActionTag>
         </div>
       </form>
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      {errorMessage && (
+        <p className="mt-2 text-center text-red-500">{errorMessage}</p>
+      )}
     </Layout>
   )
 }
