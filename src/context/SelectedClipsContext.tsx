@@ -40,6 +40,7 @@ export const SelectedClipsProvider = ({
   children: ReactNode
 }) => {
   const [selectedClips, setSelectedClips] = useState<Clip[]>([])
+  //TODO: add loading state
 
   useEffect(() => {
     const savedClips = localStorage.getItem(LOCAL_STORAGE_SELECTED_CLIPS)

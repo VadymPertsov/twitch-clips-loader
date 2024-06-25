@@ -48,7 +48,7 @@ const ClipList = memo((props: ClipListProps) => {
           {!clipsList.length ? (
             <p className="text-center">Has no clips :(</p>
           ) : (
-            <div className="grid grid-cols-4 gap-5 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+            <div className="grid grid-cols-4 gap-5 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1">
               {clipsList.map((clip, index) => (
                 <ClipItem
                   key={clip.id}
